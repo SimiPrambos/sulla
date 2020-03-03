@@ -2,7 +2,7 @@
  * Middleware between web api driver and whatsappJS.
  * Right now this file should not import nor export anything.
  * Until I figure out how to compile this file with the imports inlined.
- * Specifically the [ExposedFn] enum.
+ * Specifically the [ExposedFns] enum.
  * Maybe by creating a webpack/rollup task
  */
 
@@ -15,10 +15,11 @@ declare module WAPI {
 
 
 //THIS SHOULD BE IDENTICAL TO /api/functions/exposed.enum.ts
-enum ExposedFn {
+enum ExposedFns {
   OnMessage = 'onMessage',
   OnAck = 'onAck',
   OnParticipantsChanged = 'onParticipantsChanged',
+  OnStateChanged = 'onStateChanged'
 }
 
 /**
@@ -26,7 +27,7 @@ enum ExposedFn {
  */
 WAPI.waitNewMessages(false, data => {
   data.forEach(message => {
-    window[ExposedFn.OnMessage](message);
+    window[ExposedFns.OnMessage](message);
   });
 });
 
@@ -35,8 +36,8 @@ WAPI.waitNewAcknowledgements(function (data) {
       data = [data];
   }
   data.forEach(function (message) {
-      if(window[ExposedFn.OnAck])window[ExposedFn.OnAck](message);
+      if(window[ExposedFns.OnAck])window[ExposedFns.OnAck](message);
   });
 })
 
-// WAPI.onStateChanged(s => window[ExposedFn.OnStateChanged](s.state));
+WAPI.onStateChanged(s => window[ExposedFns.OnStateChanged](s.state));

@@ -155,10 +155,7 @@ export class Whatsapp {
   public onStateChanged(fn: (state: string) => void) {
     this.page.exposeFunction(ExposedFn.onStateChanged, (state: string) =>
       fn(state)
-    ).then(_ => this.page.evaluate(
-      () => {
-        WAPI.onStateChanged(s => window['onStateChanged'](s.state))
-      }));
+    );
   }
 
   /**
